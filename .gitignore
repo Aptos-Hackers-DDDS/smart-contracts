@@ -1,0 +1,6 @@
+
+node_modules
+move/build
+.env
+
+config.yaml
