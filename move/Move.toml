@@ -7,4 +7,4 @@ rev = 'main'
 subdir = 'aptos-move/framework/aptos-framework'
 
 [addresses]
-todolist_addr='54ee2df689360a1af3b87962d4a89274228bb86624258a696449e3b997326028'
+todolist_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
