@@ -22,7 +22,7 @@ module aptoads_objects::dynamic_toads {
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
    struct Metadata has key {
       z_index: u64,
-      image: vector<u8>,
+      image: String,
    }
 
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
@@ -98,14 +98,14 @@ module aptoads_objects::dynamic_toads {
       
    }
 
-   // public entry fun mint_new(creator: &signer, object_address: ConstructorRef) {
-   //    let aptoad_constructor_ref = create<Aptoad>(creator, string::utf8(b"Base"), string::utf8(b"1"), 1, 0, b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-   //    let aptoad_object = object::object_from_constructor_ref<Aptoad>(&aptoad_constructor_ref);
-   //    let clothing_object_2 = object::object_address<Clothing>(&object_address);
-   //    // toad_equip_trait(creator, aptoad_object, clothing_object_1);
+   public entry fun mint_new(creator: &signer, object_address: String) {
+      let aptoad_constructor_ref = create<Aptoad>(creator, string::utf8(b"Base"), string::utf8(b"1"), 1, 0, string::utf8(b"Base"));
+      let aptoad_object = object::object_from_constructor_ref<Aptoad>(&aptoad_constructor_ref);
+      // let clothing_object_2 = object::object_address<Clothing>(&object_address);
+      // toad_equip_trait(creator, aptoad_object, clothing_object_1);
       
-   //    // std::debug::print(&view_object(aptoad_object));
-   // }
+      // std::debug::print(&view_object(aptoad_object));
+   }
 
    public entry fun create_new<T:key> (
       creator: &signer,
@@ -113,7 +113,7 @@ module aptoads_objects::dynamic_toads {
       trait_name: String,
       num_trait_type: u64,
       z_index: u64,
-      image: vector<u8>,
+      image: String,
    ) {
       let res = create<T>(creator, trait_type, trait_name, num_trait_type, z_index, image);
       //let aptoad_object = object::object_from_constructor_ref<T>(&res);
@@ -126,7 +126,7 @@ module aptoads_objects::dynamic_toads {
       trait_name: String,
       num_trait_type: u64,
       z_index: u64,
-      image: vector<u8>,
+      image: String,
    ): ConstructorRef {
       let token_name = trait_type;
       string::append_utf8(&mut token_name, b" #");

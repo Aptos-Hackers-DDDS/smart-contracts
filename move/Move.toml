@@ -4,7 +4,7 @@ version = "0.0.0"
 
 [addresses]
 token_objects = "0x4"
-aptoads_objects = "a00d367d8a4b849cae62fb8141c034600443fa6be695a8ff6fd06245c78eccdb"
+aptoads_objects = "3e3f4caea68c15a272626f7f27801044296004bbd8e1c9c0dc0b8dbf5bccfa23"
 
 [dependencies.AptosFramework]
 git = 'https://github.com/aptos-labs/aptos-core.git'
