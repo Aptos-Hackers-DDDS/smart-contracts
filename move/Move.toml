@@ -8,3 +8,4 @@ subdir = 'aptos-move/framework/aptos-framework'
 
 [addresses]
 upload_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
+trait_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'

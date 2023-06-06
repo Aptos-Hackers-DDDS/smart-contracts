@@ -5,7 +5,7 @@ module upload_addr::upload_file {
         byte_array: vector<u8>
             }
 
-    public entry fun create_list(account: &signer, array: vector<u8>, seed: vector<u8>){
+    public entry fun upload(account: &signer, array: vector<u8>, seed: vector<u8>){
         let (new_resource_signer, _) = account::create_resource_account(account, seed);
         let upload_file = UploadFile {
             byte_array: array,
