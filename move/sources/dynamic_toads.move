@@ -28,7 +28,7 @@ module aptoads_objects::dynamic_toads {
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
    struct Metadata has key {
       z_index: u64,
-      //image_data: vector<u8>,
+      image: vector<u8>,
    }
 
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
@@ -142,13 +142,26 @@ module aptoads_objects::dynamic_toads {
       std::debug::print(&view_object(aptoad_object));
    }
 
+   public entry fun create_new<T:key> (
+      creator: &signer,
+      trait_type: String,
+      trait_name: String,
+      num_trait_type: u64,
+      z_index: u64,
+      image: vector<u8>,
+   ) {
+      let res = create<T>(creator, trait_type, trait_name, num_trait_type, z_index, image);
+      //let aptoad_object = object::object_from_constructor_ref<T>(&res);
+      //let aptoad_metadata = object::object_from_constructor_ref<Metadata>(&res);
+   }
+
    fun create<T>(
       creator: &signer,
       trait_type: String,
       trait_name: String,
       num_trait_type: u64,
       z_index: u64,
-      content: vector<u8>,
+      image: vector<u8>,
    ): ConstructorRef {
       let token_name = trait_type;
       string::append_utf8(&mut token_name, b" #");
@@ -241,7 +254,8 @@ module aptoads_objects::dynamic_toads {
       move_to(
          &token_signer,
          Metadata {
-            z_index
+            z_index,
+            image,
          }
       );
       //string_utils::debug_string(borrow_global<T>(std::signer::address_of(&token_signer)));
