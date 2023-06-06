@@ -1,12 +1,17 @@
 [package]
-name = 'upload_file'
-version = '1.0.0'
+name = "Dynamic Toads"
+version = "0.0.0"
+
+[addresses]
+token_objects = "0x4"
+aptoads_objects = "512c789cb722876640d0b0ab7947a7a9af4998bf027044e4292832b6c6d1cc4c"
+
 [dependencies.AptosFramework]
 git = 'https://github.com/aptos-labs/aptos-core.git'
 rev = 'main'
 subdir = 'aptos-move/framework/aptos-framework'
 
-[addresses]
-upload_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
-
-collection_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
+[dependencies.AptosTokenObjects]
+git = 'https://github.com/aptos-labs/aptos-core.git'
+rev = 'main'
+subdir = 'aptos-move/framework//aptos-token-objects'
