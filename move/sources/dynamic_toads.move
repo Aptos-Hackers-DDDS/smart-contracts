@@ -17,13 +17,7 @@ module aptoads_objects::dynamic_toads {
    // when equipping/uneqipping things to toads, use the tree
    // to find what image should be used
 
-   // 1 base toad with static background
-   // 2 clothing
-   // 2 headwear
-   // 2 glasses
-   // 2 tongue
-   // 1 fly
-   // 32 combinations total
+
 
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
    struct Metadata has key {
@@ -33,34 +27,42 @@ module aptoads_objects::dynamic_toads {
 
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
    struct Aptoad has key {
-      background: String,
-      body: String,
-      clothing: Option<Object<Clothing>>,
-      headwear: Option<Object<Headwear>>,
-      glasses: Option<Object<Glasses>>,
-      tongue: Option<Object<Tongue>>,
-      fly: Option<Object<Fly>>,
+      background: Option<Object<Background>>,
+      skin: Option<Object<Skin>>,
+      mouth: Option<Object<Mouth>>,
+      mask: Option<Object<Mask>>,
+      head: Option<Object<Head>>,
+      eyes: Option<Object<Eyes>>,
+      clothes: Option<Object<Clothes>>,
       mutator_ref: MutatorRef,
    }
 
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
-   struct Clothing has key {
+   struct Background has key {
       trait_name: String,
    }
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
-   struct Headwear has key {
+   struct Skin has key {
       trait_name: String,
    }
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
-   struct Glasses has key {
+   struct Mouth has key {
       trait_name: String,
    }
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
-   struct Tongue has key {
+   struct Mask has key {
       trait_name: String,
    }
    #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
-   struct Fly has key {
+   struct Head has key {
+      trait_name: String,
+   }
+   #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+   struct Eyes has key {
+      trait_name: String,
+   }
+   #[resource_group_member(group = aptos_framework::object::ObjectGroup)]
+   struct Clothes has key {
       trait_name: String,
    }
 
@@ -82,7 +84,7 @@ module aptoads_objects::dynamic_toads {
    const BASE_TOKEN_URI: vector<u8> = b"https://aptoads.nyc3.digitaloceanspaces.com/images/";
    const MAXIMUM_SUPPLY: u64 = 1000;
 
-   fun init_module(creator: &signer) acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly, Metadata {
+   fun init_module(creator: &signer) {
       let collection_constructor_ref = collection::create_fixed_collection(
          creator,
          string::utf8(COLLECTION_DESCRIPTION),
@@ -94,52 +96,9 @@ module aptoads_objects::dynamic_toads {
 
       let _collection_object = object::object_from_constructor_ref<Collection>(&collection_constructor_ref);
 
-      let aptoad_constructor_ref = create<Aptoad>(creator, string::utf8(b"Base"), string::utf8(b"1"), 1, 0, b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let clothing_constructor_ref_1 = create<Clothing>(creator, string::utf8(b"Clothing"), string::utf8(b"Chef Coat"), 1, 1,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let clothing_constructor_ref_2 = create<Clothing>(creator, string::utf8(b"Clothing"), string::utf8(b"Pilots Garb"), 2, 1,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let headwear_constructor_ref_1 = create<Headwear>(creator, string::utf8(b"Headwear"), string::utf8(b"Cowboy Hat"), 1, 3,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let headwear_constructor_ref_2 = create<Headwear>(creator, string::utf8(b"Headwear"), string::utf8(b"Mini Green"), 2, 3,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let glasses_constructor_ref_1 = create<Glasses>(creator, string::utf8(b"Glasses"), string::utf8(b"Lab Goggles"), 1, 2,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let glasses_constructor_ref_2 = create<Glasses>(creator, string::utf8(b"Glasses"), string::utf8(b"Zuck Goggles"), 2, 2,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let tongue_constructor_ref_1 = create<Tongue>(creator, string::utf8(b"Tongue"), string::utf8(b"Tongue Out"), 1, 4,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let tongue_constructor_ref_2 = create<Tongue>(creator, string::utf8(b"Tongue"), string::utf8(b"Stache"), 2, 4,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-      let fly_constructor_ref_1 = create<Fly>(creator, string::utf8(b"Fly"), string::utf8(b"Fly"), 1, 5,  b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
-
-      let aptoad_object = object::object_from_constructor_ref<Aptoad>(&aptoad_constructor_ref);
-      let aptoad_metadata = object::object_from_constructor_ref<Metadata>(&aptoad_constructor_ref);
-      let clothing_object_1 = object::object_from_constructor_ref<Clothing>(&clothing_constructor_ref_1);
-      let clothing_metadata_1 = object::object_from_constructor_ref<Metadata>(&clothing_constructor_ref_1);
-      let clothing_object_2 = object::object_from_constructor_ref<Clothing>(&clothing_constructor_ref_2);
-      let headwear_object_1 = object::object_from_constructor_ref<Headwear>(&headwear_constructor_ref_1);
-      let headwear_object_2 = object::object_from_constructor_ref<Headwear>(&headwear_constructor_ref_2);
-      let glasses_object_1 = object::object_from_constructor_ref<Glasses>(&glasses_constructor_ref_1);
-      let glasses_object_2 = object::object_from_constructor_ref<Glasses>(&glasses_constructor_ref_2);
-      let tongue_object_1 = object::object_from_constructor_ref<Tongue>(&tongue_constructor_ref_1);
-      let tongue_object_2 = object::object_from_constructor_ref<Tongue>(&tongue_constructor_ref_2);
-      let fly_object_1 = object::object_from_constructor_ref<Fly>(&fly_constructor_ref_1);      
-      
-      std::debug::print(&view_object(aptoad_object));
-      std::debug::print(&view_metadata_object(aptoad_metadata));
-      std::debug::print(&view_object(clothing_object_1));
-      std::debug::print(&view_metadata_object(clothing_metadata_1));
-      std::debug::print(&view_object(clothing_object_1));
-      std::debug::print(&view_object(clothing_object_2));
-      std::debug::print(&view_object(headwear_object_1));
-      std::debug::print(&view_object(headwear_object_2));
-      std::debug::print(&view_object(glasses_object_1));
-      std::debug::print(&view_object(glasses_object_2));
-      std::debug::print(&view_object(tongue_object_1));
-      std::debug::print(&view_object(tongue_object_2));
-      std::debug::print(&view_object(fly_object_1));
+      // let aptoad_constructor_ref = create<Aptoad>(creator, string::utf8(b"Base"), string::utf8(b"1"), 1, 0, b"https://aptoads.nyc3.digitaloceanspaces.com/images/");
 
 
-      toad_equip_trait(creator, aptoad_object, clothing_object_1);
-      toad_equip_trait(creator, aptoad_object, headwear_object_2);
-      toad_equip_trait(creator, aptoad_object, glasses_object_1);
-      toad_equip_trait(creator, aptoad_object, tongue_object_2);
-      toad_equip_trait(creator, aptoad_object, fly_object_1);
-
-      std::debug::print(&view_object(aptoad_object));
    }
 
    public entry fun create_new<T:key> (
@@ -198,54 +157,52 @@ module aptoads_objects::dynamic_toads {
          }
       );
 
-      if (type_info::type_of<T>() == type_info::type_of<Aptoad>()) {
-         let mutator_ref = token::generate_mutator_ref(&constructor_ref);
-         // create aptoad object
+      if (type_info::type_of<T>() == type_info::type_of<Background>()) {
          move_to(
             &token_signer,
-            Aptoad {
-               background: string::utf8(b"Blue"),
-               body: string::utf8(b"Golden"),
-               clothing: option::none(),
-               headwear: option::none(),
-               glasses: option::none(),
-               tongue: option::none(),
-               fly: option::none(),
-               mutator_ref,
-            }
-         );
-      } else if (type_info::type_of<T>() == type_info::type_of<Clothing>()) {
-         move_to(
-            &token_signer,
-            Clothing {
+            Background {
                trait_name,
             }
          );
-      } else if (type_info::type_of<T>() == type_info::type_of<Headwear>()) {
+      } else if (type_info::type_of<T>() == type_info::type_of<Skin>()) {
          move_to(
             &token_signer,
-            Headwear {
+            Skin {
                trait_name,
             }
          );
-      } else if (type_info::type_of<T>() == type_info::type_of<Glasses>()) {
+      } else if (type_info::type_of<T>() == type_info::type_of<Mouth>()) {
          move_to(
             &token_signer,
-            Glasses {
+            Mouth {
                trait_name,
             }
          );
-      } else if (type_info::type_of<T>() == type_info::type_of<Tongue>()) {
+      } else if (type_info::type_of<T>() == type_info::type_of<Mask>()) {
          move_to(
             &token_signer,
-            Tongue {
+            Mask {
                trait_name,
             }
          );
-      } else if (type_info::type_of<T>() == type_info::type_of<Fly>()) {
+      } else if (type_info::type_of<T>() == type_info::type_of<Head>()) {
          move_to(
             &token_signer,
-            Fly {
+            Head {
+               trait_name,
+            }
+         );
+      } else if (type_info::type_of<T>() == type_info::type_of<Eyes>()) {
+         move_to(
+            &token_signer,
+            Eyes {
+               trait_name,
+            }
+         );
+      } else if (type_info::type_of<T>() == type_info::type_of<Clothes>()) {
+         move_to(
+            &token_signer,
+            Clothes {
                trait_name,
             }
          );
@@ -263,83 +220,62 @@ module aptoads_objects::dynamic_toads {
       constructor_ref
    }
 
-   public fun toad_equip_trait<T: key>(owner: &signer, toad_object: Object<Aptoad>, obj_to_equip: Object<T>) acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly {
-      let toad_obj_resources = borrow_global_mut<Aptoad>(object::object_address(&toad_object));
-      let object_address = object::object_address<T>(&obj_to_equip);
-      if (exists<Clothing>(object_address)) {
-         let clothing_obj = object::convert<T, Clothing>(obj_to_equip);
-         option::fill<Object<Clothing>>(&mut toad_obj_resources.clothing, clothing_obj);
-         object::transfer_to_object(owner, obj_to_equip, toad_object);
-      } else if (exists<Headwear>(object_address)) {
-         let headwear_obj = object::convert<T, Headwear>(obj_to_equip);
-         option::fill<Object<Headwear>>(&mut toad_obj_resources.headwear, headwear_obj);
-         object::transfer_to_object(owner, obj_to_equip, toad_object);
-      } else if (exists<Glasses>(object_address)) {
-         let glasses_obj = object::convert<T, Glasses>(obj_to_equip);
-         option::fill<Object<Glasses>>(&mut toad_obj_resources.glasses, glasses_obj);
-         object::transfer_to_object(owner, obj_to_equip, toad_object);
-      } else if (exists<Tongue>(object_address)) {
-         let tongue_obj = object::convert<T, Tongue>(obj_to_equip);
-         option::fill<Object<Tongue>>(&mut toad_obj_resources.tongue, tongue_obj);
-         object::transfer_to_object(owner, obj_to_equip, toad_object);
-      } else if (exists<Fly>(object_address)) {
-         let fly_obj = object::convert<T, Fly>(obj_to_equip);
-         option::fill<Object<Fly>>(&mut toad_obj_resources.fly, fly_obj);
-         object::transfer_to_object(owner, obj_to_equip, toad_object);
-      };
-      update_uri(toad_object);
-   }
+   // public fun toad_equip_trait<T: key>(owner: &signer, toad_object: Object<Aptoad>, obj_to_equip: Object<T>) acquires Aptoad, Background, Skin, Mouth, Mask, Head, Eyes, Clothes {
+   //    let toad_obj_resources = borrow_global_mut<Aptoad>(object::object_address(&toad_object));
+   //    let object_address = object::object_address<T>(&obj_to_equip);
+   //    if (exists<Background>(object_address)) {
+   //       let background_obj = object::convert<T, Background>(obj_to_equip);
+   //       option::fill<Object<Background>>(&mut toad_obj_resources.background, background_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Skin>(object_address)) {
+   //       let skin_obj = object::convert<T, Skin>(obj_to_equip);
+   //       option::fill<Object<Skin>>(&mut toad_obj_resources.skin, skin_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Mouth>(object_address)) {
+   //       let mouth_obj = object::convert<T, Mouth>(obj_to_equip);
+   //       option::fill<Object<Mouth>>(&mut toad_obj_resources.mouth, mouth_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Mask>(object_address)) {
+   //       let mask_obj = object::convert<T, Mask>(obj_to_equip);
+   //       option::fill<Object<Mask>>(&mut toad_obj_resources.mask, mask_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Head>(object_address)) {
+   //       let head_obj = object::convert<T, Head>(obj_to_equip);
+   //       option::fill<Object<Head>>(&mut toad_obj_resources.head, head_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Eyes>(object_address)) {
+   //       let eyes_obj = object::convert<T, Eyes>(obj_to_equip);
+   //       option::fill<Object<Eyes>>(&mut toad_obj_resources.eyes, eyes_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    } else if (exists<Clothes>(object_address)) {
+   //       let clothes_obj = object::convert<T, Clothes>(obj_to_equip);
+   //       option::fill<Object<Clothes>>(&mut toad_obj_resources.clothes, clothes_obj);
+   //       object::transfer_to_object(owner, obj_to_equip, toad_object);
+   //    };
+   //    // update_uri(toad_object);
+   // }
 
-   fun update_uri(toad_object: Object<Aptoad>) acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly {
-      let token_object = object::convert<Aptoad, Token>(toad_object);
-      let toad_object_resources = borrow_global<Aptoad>(object::object_address(&toad_object));
-
-      let clothing_object = &toad_object_resources.clothing;
-      let headwear_object = &toad_object_resources.headwear;
-      let glasses_object = &toad_object_resources.glasses;
-      let tongue_object = &toad_object_resources.tongue;
-      let fly_object = &toad_object_resources.fly;
-
-      //let token_name = token::name(token_object);
-
-      std::debug::print(&string_utils::to_string(clothing_object));
-      std::debug::print(&string_utils::to_string(headwear_object));
-      std::debug::print(&string_utils::to_string(glasses_object));
-      std::debug::print(&string_utils::to_string(tongue_object));
-      std::debug::print(&string_utils::to_string(fly_object));
-
-
-
-
-      let mutator_ref = &toad_object_resources.mutator_ref;
-      // get address of each trait object, check if it's 1 or 2
-      
-      //
-      // update uri to coded value
-      // c1_h1_g1_t1_f1 == clothing 1, headwear 1, glasses 1, tongue 1, fly 1
-      let new_uri = string::utf8(b"");
-      token::set_uri(mutator_ref, new_uri);
-      std::debug::print(&token::uri(token_object));
-
-      view_object(toad_object);
-   }
 
    #[view]
-   fun view_object<T: key>(obj: Object<T>): String acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly {
+   fun view_object<T: key>(obj: Object<T>): String acquires Aptoad, Background, Skin, Mouth, Mask, Head, Eyes, Clothes {
       let token_address = object::object_address(&obj);
       //string::utils::to_string(borrow_global<T>(token_address))
       if (exists<Aptoad>(token_address)) {
          string_utils::debug_string(borrow_global<Aptoad>(token_address))
-      } else if (exists<Clothing>(token_address)) {
-         string_utils::debug_string(borrow_global<Clothing>(token_address))
-      } else if (exists<Headwear>(token_address)) {
-         string_utils::debug_string(borrow_global<Headwear>(token_address))
-      } else if (exists<Glasses>(token_address)) {
-         string_utils::debug_string(borrow_global<Glasses>(token_address))
-      } else if (exists<Tongue>(token_address)) {
-         string_utils::debug_string(borrow_global<Tongue>(token_address))
-      } else if (exists<Fly>(token_address)) {
-         string_utils::debug_string(borrow_global<Fly>(token_address))
+      } else if (exists<Background>(token_address)) {
+         string_utils::debug_string(borrow_global<Background>(token_address))
+      } else if (exists<Skin>(token_address)) {
+         string_utils::debug_string(borrow_global<Skin>(token_address))
+      } else if (exists<Mouth>(token_address)) {
+         string_utils::debug_string(borrow_global<Mouth>(token_address))
+      } else if (exists<Mask>(token_address)) {
+         string_utils::debug_string(borrow_global<Mask>(token_address))
+      } else if (exists<Head>(token_address)) {
+         string_utils::debug_string(borrow_global<Head>(token_address))
+      } else if (exists<Eyes>(token_address)) {
+         string_utils::debug_string(borrow_global<Eyes>(token_address))
+      } else if (exists<Clothes>(token_address)) {
+         string_utils::debug_string(borrow_global<Clothes>(token_address))
       } else {
          abort EINVALID_TYPE
       }
@@ -365,11 +301,11 @@ module aptoads_objects::dynamic_toads {
       string::utf8(buffer)
    }
 
-   #[test(owner = @0xFA)]
-   fun test(
-      owner: &signer,
-   ) acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly, Metadata {
-      init_module(owner);
-   }
+   // #[test(owner = @0xFA)]
+   // fun test(
+   //    owner: &signer,
+   // ) acquires Aptoad, Clothing, Headwear, Glasses, Tongue, Fly, Metadata {
+   //    init_module(owner);
+   // }
 
 }
