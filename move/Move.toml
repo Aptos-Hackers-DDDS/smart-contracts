@@ -1,5 +1,5 @@
 [package]
-name = 'my_todo_list'
+name = 'upload_file'
 version = '1.0.0'
 [dependencies.AptosFramework]
 git = 'https://github.com/aptos-labs/aptos-core.git'
@@ -7,4 +7,4 @@ rev = 'main'
 subdir = 'aptos-move/framework/aptos-framework'
 
 [addresses]
-todolist_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
+upload_addr='224792261783f242f056f6628c0b41bcaa0112fc83e449028663386b90535768'
